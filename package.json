@@ -13,11 +13,11 @@
   "dependencies": {
     "@nftstorage/ipfs-cluster": "^2.2.1",
     "d3-format": "^2.0.0",
+    "dotenv": "^8.2.0",
     "it-batch": "^1.0.8",
     "nft.storage": "^0.4.1",
     "node-fetch": "^2.6.1",
-    "ora": "^5.4.0",
-    "rc": "^1.2.8"
+    "ora": "^5.4.0"
   },
   "devDependencies": {
     "standard": "^16.0.3"

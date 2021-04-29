@@ -1,7 +1,7 @@
 import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
-import rc from 'rc'
+import dotenv from 'dotenv'
 import d3 from 'd3-format'
 import { Cluster } from '@nftstorage/ipfs-cluster'
 import batch from 'it-batch'
@@ -10,12 +10,12 @@ import split from './lib/split.js'
 
 global.fetch = fetch
 
-const conf = rc('nft.storage-tools')
+dotenv.config()
 const format = d3.format(',')
 const CONCURRENCY = 1000
 
 async function main () {
-  if (!conf.clusterUrl) {
+  if (!process.env.CLUSTER_URL) {
     throw new Error('missing IPFS Cluster URL')
   }
 
@@ -24,9 +24,10 @@ async function main () {
     throw new Error('missing path to newline delimited CID list')
   }
 
-  console.log(`🔌 Using IPFS Cluster URL: ${conf.clusterUrl}`)
+  console.log(`🔌 Using IPFS Cluster URL: ${process.env.CLUSTER_URL}`)
 
-  const cluster = new Cluster(conf.clusterUrl, { headers: conf.clusterHeaders })
+  const headers = process.env.CLUSTER_HEADERS ? JSON.parse(process.env.CLUSTER_HEADERS) : {}
+  const cluster = new Cluster(process.env.CLUSTER_URL, { headers })
   const spinner = ora()
   const start = Date.now()
   const totals = { total: 0, queued: 0, pinning: 0, pinned: 0, failed: 0, unknown: 0, requests: 0, reqsPerSec: 0 }

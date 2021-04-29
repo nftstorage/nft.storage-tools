@@ -1,18 +1,18 @@
 import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
-import rc from 'rc'
+import dotenv from 'dotenv'
 import d3 from 'd3-format'
 import batch from 'it-batch'
 import fetch from 'node-fetch'
 import split from './lib/split.js'
 
-const conf = rc('nft.storage-tools')
+dotenv.config()
 const format = d3.format(',')
 const CONCURRENCY = 10
 
 async function main () {
-  if (!conf.apiKey) {
+  if (!process.env.API_KEY) {
     throw new Error('missing nft.storage API key')
   }
 
@@ -21,7 +21,7 @@ async function main () {
     throw new Error('missing path to newline delimited CID list')
   }
 
-  const endpoint = conf.endpoint || 'https://nft.storage'
+  const endpoint = process.env.ENDPOINT || 'https://nft.storage'
   const pinsURL = new URL('api/pins', endpoint).toString()
   console.log(`🔌 Using endpoint: ${endpoint}`)
 
@@ -44,7 +44,7 @@ async function main () {
             try {
               const res = await fetch(pinsURL, {
                 method: 'POST',
-                headers: { Authorization: `Bearer ${conf.apiKey}` },
+                headers: { Authorization: `Bearer ${process.env.API_KEY}` },
                 body: JSON.stringify({ cid })
               })
               if (!res.ok) {

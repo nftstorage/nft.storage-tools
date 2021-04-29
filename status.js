@@ -1,18 +1,18 @@
 import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
-import rc from 'rc'
+import dotenv from 'dotenv'
 import d3 from 'd3-format'
 import { NFTStorage } from 'nft.storage'
 import batch from 'it-batch'
 import split from './lib/split.js'
 
-const conf = rc('nft.storage-tools')
+dotenv.config()
 const format = d3.format(',')
 const CONCURRENCY = 1000
 
 async function main () {
-  if (!conf.apiKey) {
+  if (!process.env.API_KEY) {
     throw new Error('missing nft.storage API key')
   }
 
@@ -21,10 +21,10 @@ async function main () {
     throw new Error('missing path to newline delimited CID list')
   }
 
-  const endpoint = conf.endpoint || 'https://nft.storage'
+  const endpoint = process.env.ENDPOINT || 'https://nft.storage'
   console.log(`🔌 Using endpoint: ${endpoint}`)
 
-  const store = new NFTStorage({ token: conf.apiKey, endpoint })
+  const store = new NFTStorage({ token: process.env.API_KEY, endpoint })
   const spinner = ora()
   const start = Date.now()
   const totals = { total: 0, queued: 0, pinning: 0, pinned: 0, failed: 0, unknown: 0, requests: 0, reqsPerSec: 0 }
