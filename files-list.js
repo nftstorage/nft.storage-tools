@@ -1,3 +1,9 @@
+/**
+ * List all files in your nft.storage account.
+ *
+ * Usage:
+ *     node files-list.js
+ */
 import dotenv from 'dotenv'
 import fetch from 'node-fetch'
 
@@ -25,7 +31,7 @@ async function main () {
     throw new Error('missing nft.storage API key')
   }
 
-  const endpoint = process.env.ENDPOINT || 'https://nft.storage'
+  const endpoint = process.env.ENDPOINT || 'https://api.nft.storage'
   console.log(`🔌 Using endpoint: ${endpoint}`)
 
   for await (const nfts of list(endpoint)) {

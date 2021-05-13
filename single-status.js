@@ -18,7 +18,7 @@ async function main () {
     throw new Error('missing path to newline delimited CID list')
   }
 
-  const endpoint = process.env.ENDPOINT || 'https://nft.storage'
+  const endpoint = process.env.ENDPOINT || 'https://api.nft.storage'
   console.log(`🔌 Using endpoint: ${endpoint}`)
 
   const store = new NFTStorage({ token: process.env.API_KEY, endpoint })

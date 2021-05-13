@@ -1,3 +1,8 @@
+/**
+ * Pretty print the pin status of all the CIDs in the passed pinlist file.
+ * Usage:
+ *     node status.js pinlist.txt
+ */
 import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
@@ -21,7 +26,7 @@ async function main () {
     throw new Error('missing path to newline delimited CID list')
   }
 
-  const endpoint = process.env.ENDPOINT || 'https://nft.storage'
+  const endpoint = process.env.ENDPOINT || 'https://api.nft.storage'
   console.log(`🔌 Using endpoint: ${endpoint}`)
 
   const store = new NFTStorage({ token: process.env.API_KEY, endpoint })
