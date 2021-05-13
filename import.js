@@ -17,6 +17,7 @@ import retry from 'p-retry'
 import AbortController from 'abort-controller'
 import batch from 'it-batch'
 import split from './lib/split.js'
+import drop from './lib/drop.js'
 
 dotenv.config()
 
@@ -123,15 +124,6 @@ class Pinner {
       }
     }, { retries: RETRIES })
     return res
-  }
-}
-
-async function * drop (source, n) {
-  let i = 0
-  for await (const item of source) {
-    i++
-    if (i < n) continue
-    yield item
   }
 }
 
