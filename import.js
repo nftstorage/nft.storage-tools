@@ -23,7 +23,7 @@ dotenv.config()
 
 const format = d3.format(',')
 const BATCH_SIZE = 1000 // process CIDs in batches of this size
-const RATE_LIMIT = [20, /* per */ 'second'] // rate limit requests to nft.storage
+const RATE_LIMIT = [100, /* per */ 'second'] // rate limit requests to nft.storage
 const RETRIES = 5 // failed request retries
 
 function parseArgs () {
@@ -88,9 +88,9 @@ async function main () {
 }
 
 function toText (prefix, totals) {
-  const items = [`💖 Total: ${format(totals.total)}`]
+  const items = [`💖 Total sent: ${format(totals.total)}`]
   if (totals.running) {
-    items.push(`📌 Pinning: ${totals.running}`)
+    items.push(`📌 Sending: ${totals.running}`)
   }
   items.push(`🔁 Requests/sec: ${totals.reqsPerSec.toFixed(1)}`)
   return `${prefix}\n${items.join('\n')}`
