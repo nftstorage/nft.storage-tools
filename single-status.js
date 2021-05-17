@@ -15,7 +15,7 @@ async function main () {
 
   const cid = process.argv[2]
   if (!cid) {
-    throw new Error('missing path to newline delimited CID list')
+    throw new Error('missing CID argument')
   }
 
   const endpoint = process.env.ENDPOINT || 'https://api.nft.storage'
