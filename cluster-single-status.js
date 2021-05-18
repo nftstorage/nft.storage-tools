@@ -1,7 +1,16 @@
+/**
+ * Print the status and DAG size of a CID from IPFS Cluster. Status is expressed
+ * as a Pinning Services API status: "queued"/"pinning"/"pinned"/"failed" which
+ * is derived from the "most progressed" status among all nodes in the Cluster.
+ *
+ * Usage:
+ *     node cluster-single-status.js bafybeia4eil5y73ooy3e7mhyk5dvcaml3ket64q6f6u5z4ozbxctw53r6i
+ */
 import dotenv from 'dotenv'
 import { Cluster } from '@nftstorage/ipfs-cluster'
 import fetch from 'node-fetch'
-import d3 from 'd3-format'
+import * as d3 from 'd3-format'
+import { toPSAStatus } from './lib/cluster.js'
 
 global.fetch = fetch
 
@@ -29,14 +38,6 @@ async function main () {
 }
 
 main()
-
-function toPSAStatus (status) {
-  const pinInfos = Object.values(status.peerMap)
-  if (pinInfos.some((i) => i.status === 'pinned')) return 'pinned'
-  if (pinInfos.some((i) => i.status === 'pinning')) return 'pinning'
-  if (pinInfos.some((i) => i.status === 'queued')) return 'queued'
-  return 'failed'
-}
 
 async function dagSize (cid) {
   const url = new URL(

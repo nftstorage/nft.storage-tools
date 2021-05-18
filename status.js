@@ -1,5 +1,6 @@
 /**
  * Pretty print the pin status of all the CIDs in the passed pinlist file.
+ *
  * Usage:
  *     node status.js pinlist.txt
  */
@@ -7,7 +8,7 @@ import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
 import dotenv from 'dotenv'
-import d3 from 'd3-format'
+import * as d3 from 'd3-format'
 import { NFTStorage } from 'nft.storage'
 import batch from 'it-batch'
 import split from './lib/split.js'
@@ -33,6 +34,7 @@ async function main () {
   const spinner = ora()
   const start = Date.now()
   const totals = { total: 0, queued: 0, pinning: 0, pinned: 0, failed: 0, unknown: 0, requests: 0, reqsPerSec: 0 }
+  const retryables = { failed: [], unknown: [] }
 
   spinner.start()
   try {
@@ -42,19 +44,22 @@ async function main () {
       cids => batch(cids, CONCURRENCY),
       async batchedCids => {
         for await (const cids of batchedCids) {
-          totals.total += cids.length
-          spinner.text = toText('Loading...', totals)
           await Promise.all(cids.map(async cid => {
             try {
               const { pin } = await store.status(cid)
               totals[pin.status]++
+              if (pin.status === 'failed') {
+                retryables.failed.push(cid)
+              }
             } catch (err) {
               if (err.message === 'not found') {
                 totals.unknown++
+                retryables.unknown.push(cid)
               } else {
                 throw err
               }
             } finally {
+              totals.total++
               totals.requests++
               totals.reqsPerSec = totals.requests / ((Date.now() - start) / 1000)
             }
@@ -69,6 +74,15 @@ async function main () {
     throw err
   }
   spinner.succeed(toText('Complete!', totals))
+
+  if (retryables.failed.length) {
+    console.log('\n💀 Failed CIDs:')
+    retryables.failed.forEach(cid => console.log(cid))
+  }
+  if (retryables.unknown.length) {
+    console.log('\n❓ Unknown CIDs:')
+    retryables.failed.forEach(cid => console.log(cid))
+  }
 }
 
 const percent = (value, total) => ((value / total) * 100).toFixed()

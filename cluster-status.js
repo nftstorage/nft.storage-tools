@@ -1,12 +1,19 @@
+/**
+ * Pretty print the pin status of all the CIDs in the passed pinlist file.
+ *
+ * Usage:
+ *     node cluster-status.js pinlist.txt
+ */
 import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
 import dotenv from 'dotenv'
-import d3 from 'd3-format'
+import * as d3 from 'd3-format'
 import { Cluster } from '@nftstorage/ipfs-cluster'
 import batch from 'it-batch'
 import fetch from 'node-fetch'
 import split from './lib/split.js'
+import { toPSAStatus } from './lib/cluster.js'
 
 global.fetch = fetch
 
@@ -41,7 +48,6 @@ async function main () {
       async batchedCids => {
         for await (const cids of batchedCids) {
           totals.total += cids.length
-          spinner.text = toText('Loading...', totals)
           await Promise.all(cids.map(async cid => {
             try {
               const status = toPSAStatus(await cluster.status(cid))
@@ -53,6 +59,7 @@ async function main () {
                 throw err
               }
             } finally {
+              totals.total++
               totals.requests++
               totals.reqsPerSec = totals.requests / ((Date.now() - start) / 1000)
             }
@@ -93,13 +100,5 @@ function toText (prefix, totals) {
 }
 
 const line = (prefix, value, total) => `${prefix}: ${value} (${percent(value, total)}%)`
-
-function toPSAStatus (status) {
-  const pinInfos = Object.values(status.peerMap)
-  if (pinInfos.some((i) => i.status === 'pinned')) return 'pinned'
-  if (pinInfos.some((i) => i.status === 'pinning')) return 'pinning'
-  if (pinInfos.some((i) => i.status === 'queued')) return 'queued'
-  return 'failed'
-}
 
 main()

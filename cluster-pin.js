@@ -1,8 +1,14 @@
+/**
+ * Pin a pinlist (newline separated list of CIDs) to IPFS Cluster.
+ *
+ * Usage:
+ *     node cluster-pin.js pinlist.txt
+ */
 import fs from 'fs'
 import ora from 'ora'
 import { pipeline } from 'stream/promises'
 import dotenv from 'dotenv'
-import d3 from 'd3-format'
+import * as d3 from 'd3-format'
 import batch from 'it-batch'
 import fetch from 'node-fetch'
 import { Cluster } from '@nftstorage/ipfs-cluster'

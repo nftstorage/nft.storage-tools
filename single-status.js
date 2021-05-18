@@ -1,5 +1,6 @@
 /**
  * Get and print the status of a single CID.
+ *
  * Usage:
  *     node single-status.js bafybeia4eil5y73ooy3e7mhyk5dvcaml3ket64q6f6u5z4ozbxctw53r6i
  */

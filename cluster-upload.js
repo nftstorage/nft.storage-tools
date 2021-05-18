@@ -1,3 +1,9 @@
+/**
+ * Upload a set of files to a directory in IPFS Cluster.
+ *
+ * Usage:
+ *     node cluster-upload.js path/to/file0 [...files]
+ */
 import fs from 'fs/promises'
 import path from 'path'
 import dotenv from 'dotenv'
