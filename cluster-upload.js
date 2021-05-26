@@ -39,7 +39,8 @@ async function main () {
     const res = await cluster.addDirectory(files)
     console.log(res)
   } catch (err) {
-    console.error(err, await err.response.text())
+    console.error(err)
+    if (err.response) console.error(await err.response.text())
   }
 }
 
