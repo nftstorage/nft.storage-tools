@@ -52,7 +52,7 @@ async function main () {
                 retryables.failed.push(cid)
               }
             } catch (err) {
-              if (err.message === 'not found') {
+              if (err.message.contains('not found')) {
                 totals.unknown++
                 retryables.unknown.push(cid)
               } else {
