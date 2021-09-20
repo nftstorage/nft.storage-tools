@@ -1,8 +1,8 @@
 /**
- * Upload a CAR file to nft.storage.
+ * Pack a CAR file and upload to nft.storage.
  *
  * Usage:
- *     node car-upload.js path/to/file.car
+ *     node upload-as-car.js path/to/file
  */
 import fs from 'fs'
 import os from 'os'
