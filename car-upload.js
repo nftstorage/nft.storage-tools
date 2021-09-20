@@ -1,5 +1,5 @@
 /**
- * Upload a single file to nft.storage.
+ * Upload a CAR file to nft.storage.
  *
  * Usage:
  *     node car-upload.js path/to/file.car
@@ -16,7 +16,7 @@ import ora from 'ora'
 
 dotenv.config()
 
-async function main() {
+async function main () {
   if (!process.env.API_KEY) {
     throw new Error('missing nft.storage API key')
   }

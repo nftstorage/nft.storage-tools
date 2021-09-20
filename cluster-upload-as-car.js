@@ -1,18 +1,20 @@
 /**
- * Upload a CAR file to IPFS Cluster.
+ * Pack a CAR file and upload to IPFS Cluster.
  *
  * TODO: CAR is buffered in memory
  *
  * Usage:
- *     node cluster-car-upload.js path/to/file.car
+ *     node cluster-upload-as-car.js path/to/file
  */
 import fs from 'fs/promises'
+import os from 'os'
 import path from 'path'
 import dotenv from 'dotenv'
 import { Cluster } from '@nftstorage/ipfs-cluster'
 import fetch from '@web-std/fetch'
 import { FormData } from '@web-std/form-data'
 import { File, Blob } from '@web-std/file'
+import { packToFs } from 'ipfs-car/pack/fs'
 
 Object.assign(global, { fetch, File, Blob, FormData })
 
@@ -25,10 +27,15 @@ async function main () {
 
   console.log(`🔌 Using IPFS Cluster URL: ${process.env.CLUSTER_URL}`)
 
-  const carPath = process.argv[2]
-  if (!carPath) {
-    throw new Error('missing CAR file argument')
+  const filePath = process.argv[2]
+  if (!filePath) {
+    throw new Error('missing file argument')
   }
+
+  const carPath = path.join(os.tmpdir(), `${path.basename(filePath)}.${Date.now()}.car`)
+  const { root } = await packToFs({ input: filePath, output: carPath })
+  console.log(`🚗 Packed into CAR at: ${carPath}`)
+  console.log(`🆔 CID: ${root}`)
 
   const data = await fs.readFile(carPath)
   const file = new File([data], path.basename(carPath), { type: 'application/car' })
