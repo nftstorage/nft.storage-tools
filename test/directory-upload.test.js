@@ -18,5 +18,19 @@ describe("Directory Uploading", () => {
         expect(results).toEqual([])
       })
     })
+    describe("given a directory with 1 file", () => {
+      let results
+      beforeEach(async () => {
+        results = await directoryUpload("./test/data/1-file-directory")
+      })
+
+      it("should return an array with 1 element", () => {        
+        expect(results).toHaveLength(1)
+      })
+      it("should return an array with the correct file path and cid", async () => {
+        const cid = results["./test/data/1-file-directory/frankenstein.txt"]
+        expect(cid).toEqual("QmUssLAvSqa48bukYXjnqyeWpYjKjewo7Ruyd8SrmW6tVz")
+      })
+    })
   })
 })
