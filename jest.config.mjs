@@ -92,8 +92,8 @@ export default {
   // An enum that specifies notification mode. Requires { notify: true }
   // notifyMode: "failure-change",
 
-  // A preset that is used as a base for Jest's configuration
-  // preset: undefined,
+  // A preset that is used as a base for Jest's configuration  
+  preset: 'ts-jest',
 
   // Run tests from one or more projects
   // projects: undefined,
