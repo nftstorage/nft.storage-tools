@@ -1,6 +1,8 @@
-import {directoryUpload} from "../directory-upload.js"
-describe('Directory uploading', ()=> {
-  it("should exist", ()=> {
-    expect(directoryUpload).toBeDefined()
+import { directoryUpload } from "../lib/directory-upload.js"
+describe('Directory Uploading', () => {
+  describe('directoryUpload', () => {
+    it("should exist", () => {
+      expect(directoryUpload).toBeDefined()
+    })
   })
 })
