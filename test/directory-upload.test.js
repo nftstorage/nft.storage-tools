@@ -27,8 +27,8 @@ describe("Directory Uploading", () => {
       it("should return an array with 1 element", () => {        
         expect(results).toHaveLength(1)
       })
-      it("should return an array with the correct file path and cid", async () => {
-        const cid = results["frankenstein.txt"].cid
+      it("should return an array with the correct file path and cid", () => {
+        const {cid} = results["frankenstein.txt"]
         expect(cid).toEqual("QmUssLAvSqa48bukYXjnqyeWpYjKjewo7Ruyd8SrmW6tVz")
       })
     })
