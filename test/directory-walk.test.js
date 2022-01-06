@@ -14,9 +14,10 @@ describe("Directory Walking in IPFS", () => {
       ipfs = create(IPFS_URL);
     });
     describe("given a known directory in ipfs (containing the node_modules of this project, as a matter of fact)", () => {
+      let dirinfo
       beforeEach(async () => {
         const node_modules_cid = "bafybeigda2iqw3zmzigxdv65hrrarwwnb3ysgbh4r6xkk6vl4hhtj7k3xi"
-        const dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs)
+        dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs)
       });
       it("should return an array with 1 folder", () => {
         expect(dirinfo).toHaveLength(1);
