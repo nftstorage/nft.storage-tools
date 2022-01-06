@@ -29,6 +29,7 @@ describe("Directory Walking in IPFS", () => {
         const dir = dirinfo.get("data");
         expect(dir.name).toEqual("data");
         expect(dir.type).toEqual("dir");
+        console.log(JSON.stringify(dirinfo, null, 2));
       });
       it("should have the correct number of files", () => {
         const dir = dirinfo.get("node_modules");
