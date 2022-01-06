@@ -2,6 +2,10 @@ import { getIpfsDirectoryInfo } from "../lib/directory-upload.js"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
 
 const IPFS_URL = process.env.IPFS_URL || "https://dweb.link/api/v0"
+
+const getFileCount = (dir) => {
+  return Object.keys(Object.keys(dir.files)).length
+}
 describe("Directory Walking in IPFS", () => {
   describe("directoryWalk", () => {
     it("should exist", () => {
@@ -10,8 +14,9 @@ describe("Directory Walking in IPFS", () => {
   })
   describe("given an ipfs client", () => {
     let ipfs
-    beforeAll(() => {
+    beforeAll(async() => {
       ipfs = ipfsHttpCreate(IPFS_URL)
+      await ipfs.id
     })
     describe("given a known directory in ipfs (containing the node_modules of this project, as a matter of fact)", () => {
       let dirinfo
@@ -32,9 +37,11 @@ describe("Directory Walking in IPFS", () => {
         expect(dir.type).toEqual("dir")
       })
 
-      it("should have 4 files in it", () => {
+      it.only("should have 4 files in it", () => {
         const dir = dirinfo["data"]
-        expect(Object.keys(Object.keys(dir.files).length)).toHaveLength(3)
+        const length = getFileCount(dir)
+
+        expect(length).toEqual(3)
       })
     })
     xdescribe("given a different directory in ipfs", () => {
