@@ -1,6 +1,6 @@
 import { getIpfsDirectoryInfo } from "../lib/directory-upload.js"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
-import { map, path, compose, keys } from "ramda"
+import { map, path } from "ramda"
 
 // Note: to avoid rate limiting, consider running a local ipfs daemon and running the tests like this:
 // IPFS_URL="http://localhost:5001/api/v0" npm run test 
