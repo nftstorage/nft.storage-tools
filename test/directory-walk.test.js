@@ -19,6 +19,7 @@ describe("Directory Walking in IPFS", () => {
       beforeAll(async () => {
         const node_modules_cid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi";
         dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs);
+        console.log(JSON.stringify(dirinfo, null, 2))
       });
 
       it("should return an array with 1 folder", () => {
@@ -26,14 +27,14 @@ describe("Directory Walking in IPFS", () => {
       });
 
       it("should be a directory called 'data'", () => {
-        const dir = dirinfo.get("data");
+        const dir = dirinfo["data"]
         expect(dir.name).toEqual("data");
         expect(dir.type).toEqual("dir");       
       });
       
       it("should have 3 files in it", () => {
-        const dir = dirinfo.get("data");
-        expect(dir.files.size).toEqual(3);
+        const dir = dirinfo["data"]
+        expect(Object.keys(Object.keys(dir.files).length)).toHaveLength(3);
       });
     });
     xdescribe("given a different directory in ipfs", () => {
