@@ -1,7 +1,7 @@
 import { getIpfsDirectoryInfo } from "../lib/directory-upload.js";
 import { create } from "ipfs-http-client";
 
-const IPFS_URL = process.env.IPFS_URL || "https://dweb.link/api/v0`";
+const IPFS_URL = process.env.IPFS_URL || "https://dweb.link/api/v0";
 describe("Directory Walking in IPFS", () => {
   describe("directoryWalk", () => {
     it("should exist", () => {
@@ -28,7 +28,7 @@ describe("Directory Walking in IPFS", () => {
       it("should be a directory called 'node_modules'", () => {
         const [dir] = dirinfo
         expect(dir.name).toEqual("node_modules");
-        expect(dir.type).toEqual("directory");
+        expect(dir.type).toEqual("dir");
       });
 
     });
@@ -40,14 +40,14 @@ describe("Directory Walking in IPFS", () => {
         dirinfo = await getIpfsDirectoryInfo(jest_module_cid, ipfs);
       });
 
-      it("should return an array with 1 folder", () => {
-        expect(dirinfo).toHaveLength(1);
+      it("should return an array with 11 folders", () => {
+        expect(dirinfo).toHaveLength(11);
       });
 
-      it("should be a directory with named '@jest'", () => {
+      it("should have a directory named 'console'", () => {
         const [dir] = dirinfo
-        expect(dir.name).toEqual("@jest");
-        expect(dir.type).toEqual("directory");
+        expect(dir.name).toEqual("console");
+        expect(dir.type).toEqual("dir");
       });
       
     });
