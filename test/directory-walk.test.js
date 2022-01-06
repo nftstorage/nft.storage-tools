@@ -22,11 +22,11 @@ describe("Directory Walking in IPFS", () => {
       });
 
       it("should return an array with 1 folder", () => {
-        expect(dirinfo).toHaveLength(1);
+        expect(dirinfo.size).toEqual(1);
       });
 
       it("should be a directory called 'node_modules'", () => {
-        const [dir] = dirinfo
+        const dir = dirinfo.get('node_modules');
         expect(dir.name).toEqual("node_modules");
         expect(dir.type).toEqual("dir");
       });
@@ -41,11 +41,11 @@ describe("Directory Walking in IPFS", () => {
       });
 
       it("should return an array with 11 folders", () => {
-        expect(dirinfo).toHaveLength(11);
+        expect(dirinfo.size).toEqual(11);
       });
 
       it("should have a directory named 'console'", () => {
-        const [dir] = dirinfo
+        const dir = dirinfo.get('console');
         expect(dir.name).toEqual("console");
         expect(dir.type).toEqual("dir");
       });
