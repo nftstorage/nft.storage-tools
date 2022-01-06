@@ -10,14 +10,14 @@ describe("Directory Walking in IPFS", () => {
   });
   describe("given an ipfs client", () => {
     let ipfs;
-    beforeEach(() => {
+    beforeAll(() => {
       ipfs = create(IPFS_URL);
     });
     describe("given a known directory in ipfs (containing the node_modules of this project, as a matter of fact)", () => {
       let dirinfo;
       
-      beforeEach(async () => {
-        const node_modules_cid = "bafybeihf7w7ypovwsbfharafaxbsgrc4qtvgrpueqriv4mvtshklsngu5e";
+      beforeAll(async () => {
+        const node_modules_cid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi";
         dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs);
       });
 
