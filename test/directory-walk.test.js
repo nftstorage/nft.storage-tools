@@ -4,6 +4,7 @@ import { create as ipfsHttpCreate } from "ipfs-http-client"
 
 // Note: to avoid rate limiting, consider running a local ipfs daemon and running the tests like this:
 // IPFS_URL="http://localhost:5001/api/v0" npm run test 
+// This also caches the files locally, greatly speeding up the tests.
 
 const IPFS_URL = process.env.IPFS_URL || "https://dweb.link/api/v0"
 
