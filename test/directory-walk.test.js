@@ -4,7 +4,7 @@ import { create as ipfsHttpCreate } from "ipfs-http-client"
 const IPFS_URL = process.env.IPFS_URL || "https://dweb.link/api/v0"
 
 const getFileCount = (dir) => {
-  return Object.keys(Object.keys(dir.files)).length
+  return Object.keys(dir).length
 }
 describe("Directory Walking in IPFS", () => {
   describe("directoryWalk", () => {
@@ -28,7 +28,8 @@ describe("Directory Walking in IPFS", () => {
       })
 
       it("should return an array with 1 folder", () => {
-        expect(dirinfo.size).toEqual(1)
+        const length = getFileCount(dirinfo)
+        expect(length).toEqual(1)
       })
 
       it("should be a directory called 'data'", () => {
@@ -37,9 +38,9 @@ describe("Directory Walking in IPFS", () => {
         expect(dir.type).toEqual("dir")
       })
 
-      it.only("should have 4 files in it", () => {
+      it("should have 4 files in it", () => {
         const dir = dirinfo["data"]
-        const length = getFileCount(dir)
+        const length = getFileCount(dir.files)
 
         expect(length).toEqual(3)
       })
@@ -53,7 +54,8 @@ describe("Directory Walking in IPFS", () => {
       })
 
       it("should return an array with 11 folders", () => {
-        expect(dirinfo.size).toEqual(11)
+        const length = getFileCount(dir)
+        expect(length).toEqual(11)
       })
 
       it("should have a directory named 'console'", () => {
