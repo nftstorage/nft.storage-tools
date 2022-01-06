@@ -17,11 +17,11 @@ describe("Directory Walking in IPFS", () => {
       let dirinfo;
       
       beforeEach(async () => {
-        const node_modules_cid = "bafybeigda2iqw3zmzigxdv65hrrarwwnb3ysgbh4r6xkk6vl4hhtj7k3xi";
+        const node_modules_cid = "bafybeihf7w7ypovwsbfharafaxbsgrc4qtvgrpueqriv4mvtshklsngu5e";
         dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs);
       });
 
-      it("should return an array with 1 folder", () => {
+      it.only("should return an array with 1 folder", () => {
         expect(dirinfo.size).toEqual(1);
       });
 
@@ -30,7 +30,10 @@ describe("Directory Walking in IPFS", () => {
         expect(dir.name).toEqual("node_modules");
         expect(dir.type).toEqual("dir");
       });
-
+      it("should have the correct number of files", () => {
+        const dir = dirinfo.get('node_modules');
+        expect(dir.files.size).toEqual(3);
+      })
     });
     describe("given a different directory in ipfs", () => {
       let dirinfo;
