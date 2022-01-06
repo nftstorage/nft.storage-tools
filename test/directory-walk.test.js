@@ -47,7 +47,7 @@ describe("Directory Walking in IPFS", () => {
         const dir = dirinfo["data"]
         const length = getFileCount(dir.files)
 
-        expect(length).toEqual(3)
+        expect(length).toEqual(4)
       })
     })
     xdescribe("given a different directory in ipfs", () => {
