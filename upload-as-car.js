@@ -40,7 +40,7 @@ async function main () {
   spinner.stopAndPersist({ text: `CAR file size: ${bytes(stat.size)}`, symbol: '🏋️' })
 
   try {
-    const carReader = await CarIndexedReader.fromFile(carPath)
+    const carReader = await CarIndexedReader
     const endpoint = process.env.ENDPOINT || 'https://api.nft.storage'
     const storage = new NFTStorage({ token: process.env.API_KEY, endpoint })
     spinner.stopAndPersist({ text: `Using endpoint: ${endpoint}`, symbol: '🔌' })
