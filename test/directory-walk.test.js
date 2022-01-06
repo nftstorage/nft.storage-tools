@@ -25,14 +25,14 @@ describe("Directory Walking in IPFS", () => {
         expect(dirinfo.size).toEqual(1);
       });
 
-      it.only("should be a directory called 'data'", () => {
+      it("should be a directory called 'data'", () => {
         const dir = dirinfo.get("data");
         expect(dir.name).toEqual("data");
-        expect(dir.type).toEqual("dir");
-        console.log(JSON.stringify(dirinfo, null, 2));
+        expect(dir.type).toEqual("dir");       
       });
-      it("should have the correct number of files", () => {
-        const dir = dirinfo.get("node_modules");
+      
+      it("should have 3 files in it", () => {
+        const dir = dirinfo.get("data");
         expect(dir.files.size).toEqual(3);
       });
     });
