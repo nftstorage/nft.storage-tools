@@ -32,7 +32,7 @@ describe("Directory Walking in IPFS", () => {
         expect(dir.type).toEqual("dir");       
       });
       
-      it("should have 3 files in it", () => {
+      it("should have 4 files in it", () => {
         const dir = dirinfo["data"]
         expect(Object.keys(Object.keys(dir.files).length)).toHaveLength(3);
       });
