@@ -15,29 +15,29 @@ describe("Directory Walking in IPFS", () => {
     });
     describe("given a known directory in ipfs (containing the node_modules of this project, as a matter of fact)", () => {
       let dirinfo;
-      
+
       beforeAll(async () => {
         const node_modules_cid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi";
         dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs);
       });
 
-      it.only("should return an array with 1 folder", () => {
+      it("should return an array with 1 folder", () => {
         expect(dirinfo.size).toEqual(1);
       });
 
       it("should be a directory called 'node_modules'", () => {
-        const dir = dirinfo.get('node_modules');
+        const dir = dirinfo.get("node_modules");
         expect(dir.name).toEqual("node_modules");
         expect(dir.type).toEqual("dir");
       });
       it("should have the correct number of files", () => {
-        const dir = dirinfo.get('node_modules');
+        const dir = dirinfo.get("node_modules");
         expect(dir.files.size).toEqual(3);
-      })
+      });
     });
-    describe("given a different directory in ipfs", () => {
+    xdescribe("given a different directory in ipfs", () => {
       let dirinfo;
-      
+
       beforeEach(async () => {
         const jest_module_cid = "bafybeiam7xjs4jhpfegy5z7ob5a4ad2lifj53minvaobelhhsx7ksq6wwa";
         dirinfo = await getIpfsDirectoryInfo(jest_module_cid, ipfs);
@@ -48,11 +48,10 @@ describe("Directory Walking in IPFS", () => {
       });
 
       it("should have a directory named 'console'", () => {
-        const dir = dirinfo.get('console');
+        const dir = dirinfo.get("console");
         expect(dir.name).toEqual("console");
         expect(dir.type).toEqual("dir");
       });
-      
     });
   });
 });
