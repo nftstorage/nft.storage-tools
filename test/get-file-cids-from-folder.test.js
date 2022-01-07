@@ -34,8 +34,6 @@ describe("Directory Walking in IPFS", () => {
         beforeAll(async () => {
           const node_modules_cid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi"
           dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs)
-          console.log(JSON.stringify(dirinfo, null, 2))
-          console.log(JSON.stringify(ls(dirinfo), null, 2))
         })
 
         it("should return an array with 1 folder", () => {
@@ -72,34 +70,6 @@ describe("Directory Walking in IPFS", () => {
             cid: "tower-madness-cid",
             type: "dir",
             files: {
-              "flips-stealth": {
-                cid: "flips-stealth-cid",
-                type: "dir",
-                files: {
-                  "homing-warmth": {                   
-                    cid: "homing-warmth-cid",
-                    type: "dir",
-                    files: {
-                      "suddenly": {
-                        cid: "suddenly-cid",
-                        type: "file",
-                        files: {},
-                      },
-                    },
-                  },
-                  "melodramatic-malfunctions": {
-                    cid: "melodramatic-malfunctions-cid",
-                    type: "dir",
-                    files: {
-                      "urges-fingerprint-gradually": {                      
-                        cid: "urges-fingerprint-gradually-cid",
-                        type: "file",
-                        files: {},
-                      },
-                    },
-                  },
-                },
-              },
               "perilously.txt": {
                 cid: "perilously-cid",
                 type: "file",
@@ -114,9 +84,37 @@ describe("Directory Walking in IPFS", () => {
         beforeEach(() => {
           flattened = flatten(dirinfo)
         })
-        it("should give us the correct path for the perilously.txt file", () => {
+        it.only("should give us the correct path for the perilously.txt file", () => {
           const perilous = flattened["tower-madness/perilously.txt"]
           expect(perilous.cid).toEqual("perilously-cid")
+        })
+      })
+      describe("when flattening the directory with different input", () => {
+        beforeEach(() => {
+          dirinfo = {
+            "flips-stealth": {
+              cid: "flips-stealth-cid",
+              type: "dir",
+              files: {
+                "melodramatic-malfunctions": {
+                  cid: "melodramatic-malfunctions-cid",
+                  type: "dir",
+                  files: {
+                    "urges-fingerprint-gradually.txt": {
+                      cid: "gradual-fingerprint-cid",
+                      type: "file",
+                      files: {},
+                    },
+                  },
+                },
+              },
+            },
+          }
+        })
+        it("should give us the correct path for the urges-fingerprint-gradually.txt file", () => {
+          console.log(JSON.stringify(flattened, null, 2))
+          const sudden = flattened["flips-stealth/melodramatic-malfunctions/urges-fingerprint-gradually.txt"]
+          expect(sudden.cid).toEqual("gradual-fingerprint-cid")
         })
       })
     })
