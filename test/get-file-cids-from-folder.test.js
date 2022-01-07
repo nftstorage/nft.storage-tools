@@ -1,4 +1,4 @@
-import { getIpfsDirectoryInfo } from "../lib/directory-upload"
+import { getIpfsDirectoryInfo } from "../lib/get-file-cids-from-folder"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
 import { map, path } from "ramda"
 
@@ -49,7 +49,7 @@ describe("Directory Walking in IPFS", () => {
       it("should be a directory called 'data'", () => {
         const dir = dirinfo["data"]
         expect(dir.name).toEqual("data")
-        expect(dir.type).toEqual("dir")
+        expect(dir.type).toEqual("dir")        
       })
 
       it("should have 4 files in it", () => {
@@ -58,24 +58,10 @@ describe("Directory Walking in IPFS", () => {
 
         expect(length).toEqual(4)
       })
-    })
-    xdescribe("given a different directory in ipfs", () => {
-      let dirinfo
-
-      beforeEach(async () => {
-        const jest_module_cid = "bafybeiam7xjs4jhpfegy5z7ob5a4ad2lifj53minvaobelhhsx7ksq6wwa"
-        dirinfo = await getIpfsDirectoryInfo(jest_module_cid, ipfs)
-      })
-
-      it("should return an array with 11 folders", () => {
-        const length = getFileCount(dir)
-        expect(length).toEqual(11)
-      })
-
-      it("should have a directory named 'console'", () => {
-        const dir = dirinfo.get("console")
-        expect(dir.name).toEqual("console")
-        expect(dir.type).toEqual("dir")
+      it("should have cids", () => {
+        const cid = dirinfo["data"].cid
+        expect(cid).toBeDefined()
+        console.log(cid)
       })
     })
   })
