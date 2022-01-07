@@ -45,13 +45,14 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
   }
 }
 
-const retryClientStore = async (client, fileProps, timeToWait = 500) => {
-  // console.log(`uploading ${fileProps.name}...`)
+const retryClientStore = async (client, fileProps, timeToWait = 500) => {  
   try {
     return await client.store(fileProps)
   } catch (e) {
-    // console.log(`error uploading ${fileProps.name}: ${e.message}`)
-    timeToWait *= (1 + (Math.random() / 5)) // backoff rate, adding some jitter. Should help the concurrency figure itself out.
+    
+    timeToWait *= (1 + Math.random()) // backoff rate, adding some jitter. Should help the concurrency figure itself out.
+    if(timeToWait > 60 * 1000) timeToWait = 60 * 1000 * (1 + Math.random())// cap at 1-2 minutes
+
     console.error(chalk.red(`will retry uploading ${fileProps.name} in ${timeToWait}ms`))
     await timeout(timeToWait)
     return retryClientStore(client, fileProps, timeToWait)
