@@ -28,12 +28,12 @@ describe("Directory Walking in IPFS", () => {
         ipfs = ipfsHttpCreate(IPFS_URL)
         await ipfs.id
       })
-      describe("given a known directory in ipfs (containing the node_modules of this project, as a matter of fact)", () => {
+      describe("given a known directory in ipfs", () => {
         let dirinfo
 
         beforeAll(async () => {
-          const node_modules_cid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi"
-          dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs)
+          const dirCid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi"
+          dirinfo = await getIpfsDirectoryInfo(dirCid, ipfs)
         })
 
         it("should return an array with 1 folder", () => {
@@ -84,7 +84,6 @@ describe("Directory Walking in IPFS", () => {
           flattened = findCidsForFiles(dirinfo, ["tower-madness/perilously.txt"])
         })
         it("should give us the correct path for the perilously.txt file", () => {
-          console.log({ flattened })
           const perilous = flattened["tower-madness/perilously.txt"]
           expect(perilous.cid).toEqual("perilously-cid")
         })
