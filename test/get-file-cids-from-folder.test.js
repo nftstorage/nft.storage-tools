@@ -68,7 +68,7 @@ describe("Directory Walking in IPFS", () => {
       beforeEach(() => {
         //sorry for the huge object. But we need to test deeply nested stuff
         dirinfo = {
-          "stiff-flux": {
+          "tower-madness": {
             cid: "tower-madness-cid",
             type: "dir",
             files: {
@@ -100,7 +100,7 @@ describe("Directory Walking in IPFS", () => {
                   },
                 },
               },
-              "perilously": {
+              "perilously.txt": {
                 cid: "perilously-cid",
                 type: "file",
                 files: {},
@@ -114,9 +114,9 @@ describe("Directory Walking in IPFS", () => {
         beforeEach(() => {
           flattened = flatten(dirinfo)
         })
-        it("should give us the correct path for the cousin.txt file", () => {
-          const cousin = flattened["data/4-nested/1-nested/cousin.txt"]
-          expect(cousin.cid).toEqual("bafkreiaknttxbghhjdg55tqanaoispulu4m7komya4mvus2naijmsds2bu")
+        it("should give us the correct path for the perilously.txt file", () => {
+          const perilous = flattened["tower-madness/perilously.txt"]
+          expect(perilous.cid).toEqual("perilously-cid")
         })
       })
     })
