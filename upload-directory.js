@@ -5,13 +5,14 @@
  *     MAX_CONCURRENT_UPLOADS=5 API_KEY="<whatever>" node upload-directory.js ./test/data/1-file-directory
  */
 import { readFile } from "fs/promises"
-import dotenv from "dotenv"
-import { NFTStorage, File } from "nft.storage"
-import recursive from "recursive-readdir"
-
-import { Semaphore } from "await-semaphore"
-
 import { promisify } from "util"
+
+import dotenv from "dotenv"
+import { Semaphore } from "await-semaphore"
+import recursive from "recursive-readdir"
+import chalk from 'chalk'
+import { NFTStorage, File } from "nft.storage"
+
 const timeout = promisify(setTimeout)
 
 //lots of dummy data to test the uploader
@@ -33,7 +34,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
         file: new File(await readFile(file, "utf8"), file, { type: "text/plain" })
       }
     }
-    retryClientStore(client, fileProps).then(console.log).finally(release)
+    retryClientStore(client, fileProps).then(console.table).finally(release) //finally, sweet release.
   }
 }
 
@@ -42,9 +43,9 @@ const retryClientStore = async (client, fileProps, timeToWait = 500) => {
   try {
     return await client.store(fileProps)
   } catch (e) {
-    console.log(`error uploading ${fileProps.name}: ${e.message}`)
+    // console.log(`error uploading ${fileProps.name}: ${e.message}`)
     timeToWait *= 1.2 + Math.random() // backoff rate, adding some jitter. Should help the concurrency figure itself out.
-    console.log("will retry in", timeToWait, "ms")
+    console.error(chalk.red(`will retry uploading ${fileProps.name} in, ${timeToWait}ms`))
     await timeout(timeToWait)
     return retryClientStore(client, fileProps, timeToWait)
   }
