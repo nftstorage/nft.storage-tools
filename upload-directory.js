@@ -36,14 +36,14 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
       }
     }
     const logData = (data) =>{      
-      console.table({...data, filesFinished: filesFinished++, filesTotal: files.length, filePercent: (filesFinished / files.length) * 100})
+      console.table({...data, fileName: file, filesFinished: filesFinished++, filesTotal: files.length, filePercent: (filesFinished / files.length) * 100})
     }
     retryClientStore(client, fileProps).then(logData).finally(release) //finally, sweet release.
   }
 }
 
 const retryClientStore = async (client, fileProps, timeToWait = 500) => {
-  console.log(`uploading ${fileProps.name}...`)
+  // console.log(`uploading ${fileProps.name}...`)
   try {
     return await client.store(fileProps)
   } catch (e) {
