@@ -1,4 +1,4 @@
-import { getIpfsDirectoryInfo, flatten } from "../lib/get-file-cids-from-folder"
+import { getIpfsDirectoryInfo, findCidsForFiles } from "../lib/get-file-cids-from-folder"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
 import { map, path } from "ramda"
 
@@ -82,13 +82,16 @@ describe("Directory Walking in IPFS", () => {
       describe("when flattening the directory", () => {
         let flattened
         beforeEach(() => {
-          flattened = flatten(dirinfo)
+          flattened = findCidsForFiles(dirinfo, ["tower-madness/perilously.txt"])
+        
         })
         it.only("should give us the correct path for the perilously.txt file", () => {
+          console.log({ flattened })
           const perilous = flattened["tower-madness/perilously.txt"]
           expect(perilous.cid).toEqual("perilously-cid")
         })
       })
+      
       describe("when flattening the directory with different input", () => {
         beforeEach(() => {
           dirinfo = {
