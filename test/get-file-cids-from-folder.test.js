@@ -1,4 +1,4 @@
-import { getIpfsDirectoryInfo, findCidsForFiles } from "../lib/get-file-cids-from-folder"
+import { getIpfsDirectoryInfo, findCidsForPaths } from "../lib/get-file-cids-from-folder"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
 import { map, path } from "ramda"
 
@@ -18,7 +18,7 @@ const ls = (f) => {
 }
 
 describe("Directory Walking in IPFS", () => {
-  describe("getIpfsDirectoryInfo", () => {
+  describe("getIpfsDirectoryInfo()", () => {
     it("should exist", () => {
       expect(getIpfsDirectoryInfo).toBeDefined()
     })
@@ -60,7 +60,7 @@ describe("Directory Walking in IPFS", () => {
       })
     })
   })
-  describe("flatten", () => {
+  describe("findCidsForPaths()", () => {
     let dirinfo
     describe("given a directory in the 'getIpfsDirectoryInfo' format", () => {
       beforeEach(() => {
@@ -81,7 +81,7 @@ describe("Directory Walking in IPFS", () => {
       describe("when flattening the directory", () => {
         let flattened
         beforeEach(() => {
-          flattened = findCidsForFiles(dirinfo, ["tower-madness/perilously.txt"])
+          flattened = findCidsForPaths(dirinfo, ["tower-madness/perilously.txt"])
         })
         it("should give us the correct path for the perilously.txt file", () => {
           const perilous = flattened["tower-madness/perilously.txt"]
@@ -114,7 +114,7 @@ describe("Directory Walking in IPFS", () => {
       describe("when flattening the directory with different input", () => {
         let flattened
         beforeEach(() => {
-          flattened = findCidsForFiles(dirinfo, ["flips-stealth/melodramatic-malfunctions/urges-fingerprint-gradually.txt"])
+          flattened = findCidsForPaths(dirinfo, ["flips-stealth/melodramatic-malfunctions/urges-fingerprint-gradually.txt"])
         })
         it("should give us the correct path for the urges-fingerprint-gradually.txt file", () => {
           const sudden = flattened["flips-stealth/melodramatic-malfunctions/urges-fingerprint-gradually.txt"]
