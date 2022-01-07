@@ -37,8 +37,7 @@ describe("Directory Walking in IPFS", () => {
       beforeAll(async () => {
         const node_modules_cid = "bafybeidl7ozkgaya4jb6tt3ey5t7pw7uefjfdirwfnnplrim2ksw7a4doi"
         dirinfo = await getIpfsDirectoryInfo(node_modules_cid, ipfs)
-        // console.log(JSON.stringify(dirinfo, null, 2))
-        console.log(JSON.stringify(ls(dirinfo),null, 2))
+        // console.log(JSON.stringify(ls(dirinfo),null, 2))
       })
 
       it("should return an array with 1 folder", () => {
@@ -61,7 +60,6 @@ describe("Directory Walking in IPFS", () => {
       it("should have cids", () => {
         const cid = dirinfo["data"].cid
         expect(cid).toEqual("bafybeifoxdqsohqbyj7a7hzsh2aruusoal2yhbgustgw7e7zr4cc2ks7oa")
-        console.log(cid)
       })
     })
   })
