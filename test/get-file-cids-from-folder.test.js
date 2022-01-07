@@ -1,4 +1,4 @@
-import { getIpfsDirectoryInfo, findCidsForPaths } from "../lib/get-file-cids-from-folder"
+import { getIpfsDirectoryInfo, findCidsForPaths, findCidForPath } from "../lib/get-file-cids-from-folder"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
 import { map, path } from "ramda"
 
@@ -56,6 +56,16 @@ describe("Directory Walking in IPFS", () => {
         it("should have cids", () => {
           const cid = dirinfo["data"].cid
           expect(cid).toEqual("bafybeifoxdqsohqbyj7a7hzsh2aruusoal2yhbgustgw7e7zr4cc2ks7oa")
+        })
+        describe("when asking for a cid by path", () => {
+          let cid
+          beforeEach(() => {
+            const frankenPath = "data/1-file-directory/frankenstein.txt"
+            cid = findCidForPath(dirinfo,frankenPath)[frankenPath].cid
+          })
+          it("should return a correct cid", () => {
+            expect(cid).toEqual("bafybeihhw3sstylc4tymjxny2adphvwfupmchfywjjdhzbgs57k4jwp26e")
+          })
         })
       })
     })
