@@ -16,14 +16,15 @@ import { NFTStorage, File } from "nft.storage"
 const timeout = promisify(setTimeout)
 
 //lots of dummy data to test the uploader
-const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
+const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {  
   const image = new File(await readFile(process.cwd() + "/status.js"), "status.js", { type: "image/jpg" })
   const limiter = new Semaphore(maxConcurrentUploads)
 
   const client = new NFTStorage({ endpoint, token })
 
   const files = await recursive(path)
-
+  
+  let filesFinished = 0
   for (const file of files) {
     const release = await limiter.acquire()
     const fileProps = {
@@ -34,7 +35,10 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
         file: new File(await readFile(file, "utf8"), file, { type: "text/plain" })
       }
     }
-    retryClientStore(client, fileProps).then(console.table).finally(release) //finally, sweet release.
+    const logData = (data) =>{      
+      console.table({...data, filesFinished: filesFinished++, filesTotal: files.length, filePercent: (filesFinished / files.length) * 100})
+    }
+    retryClientStore(client, fileProps).then(logData).finally(release) //finally, sweet release.
   }
 }
 
