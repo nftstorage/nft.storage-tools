@@ -10,20 +10,23 @@ import { promisify } from "util"
 import dotenv from "dotenv"
 import { Semaphore } from "await-semaphore"
 import recursive from "recursive-readdir"
-import chalk from 'chalk'
+import chalk from "chalk"
 import { NFTStorage, File } from "nft.storage"
 
 const timeout = promisify(setTimeout)
 
 //lots of dummy data to test the uploader
-const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {  
+const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
+  const startTime = Date.now()
+
   const image = new File(await readFile(process.cwd() + "/status.js"), "status.js", { type: "image/jpg" })
   const limiter = new Semaphore(maxConcurrentUploads)
+
 
   const client = new NFTStorage({ endpoint, token })
 
   const files = await recursive(path)
-  
+
   let filesFinished = 0
   for (const file of files) {
     const release = await limiter.acquire()
@@ -35,8 +38,8 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
         file: new File(await readFile(file, "utf8"), file, { type: "text/plain" })
       }
     }
-    const logData = (data) =>{      
-      console.table({...data, fileName: file, filesFinished: filesFinished++, filesTotal: files.length, filePercent: (filesFinished / files.length) * 100})
+    const logData = (data) => {
+      console.table({ ...data, fileName: file, filesFinished: filesFinished++, filesTotal: files.length, filePercent: (filesFinished / files.length) * 100, filesPerSecond: filesFinished / ((Date.now() - startTime) / 1000) })
     }
     retryClientStore(client, fileProps).then(logData).finally(release) //finally, sweet release.
   }
@@ -48,7 +51,7 @@ const retryClientStore = async (client, fileProps, timeToWait = 500) => {
     return await client.store(fileProps)
   } catch (e) {
     // console.log(`error uploading ${fileProps.name}: ${e.message}`)
-    timeToWait *= (1 + Math.random()) // backoff rate, adding some jitter. Should help the concurrency figure itself out.
+    timeToWait *= (1 + (Math.random() / 5)) // backoff rate, adding some jitter. Should help the concurrency figure itself out.
     console.error(chalk.red(`will retry uploading ${fileProps.name} in ${timeToWait}ms`))
     await timeout(timeToWait)
     return retryClientStore(client, fileProps, timeToWait)
