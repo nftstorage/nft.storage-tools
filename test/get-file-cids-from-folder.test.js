@@ -68,54 +68,42 @@ describe("Directory Walking in IPFS", () => {
       beforeEach(() => {
         //sorry for the huge object. But we need to test deeply nested stuff
         dirinfo = {
-          data: {
-            name: "data",
-            cid: "bafybeifoxdqsohqbyj7a7hzsh2aruusoal2yhbgustgw7e7zr4cc2ks7oa",
+          "stiff-flux": {
+            cid: "tower-madness-cid",
             type: "dir",
             files: {
-              "4-nested": {
-                name: "4-nested",
-                cid: "bafybeibouceue2xzwdrk4rtk3rhw7jszguaw4dfppvoffle4xhsi3sta64",
+              "flips-stealth": {
+                cid: "flips-stealth-cid",
                 type: "dir",
                 files: {
-                  "1-nested": {
-                    name: "1-nested",
-                    cid: "bafybeifm6svgjetu55usmfh5rkbudy7b3dsgx3f7gvhjtljyst44shm2fq",
+                  "homing-warmth": {                   
+                    cid: "homing-warmth-cid",
                     type: "dir",
                     files: {
-                      "cousin.txt": {
-                        name: "cousin.txt",
-                        cid: "bafkreiaknttxbghhjdg55tqanaoispulu4m7komya4mvus2naijmsds2bu",
+                      "suddenly": {
+                        cid: "suddenly-cid",
                         type: "file",
                         files: {},
                       },
                     },
                   },
-                  "2-nested": {
-                    name: "2-nested",
-                    cid: "bafybeibsw5a2ecgnhk3rma7yejhsbrsv7fdlzxmkhfne4dq2oz4ztrxqym",
+                  "melodramatic-malfunctions": {
+                    cid: "melodramatic-malfunctions-cid",
                     type: "dir",
                     files: {
-                      "deep-sibling-2.txt": {
-                        name: "deep-sibling-2.txt",
-                        cid: "bafkreidqpelknidegyh4eyoxqqpmaef7ndlz6texlmwfbo5uthgssdrt4e",
+                      "urges-fingerprint-gradually": {                      
+                        cid: "urges-fingerprint-gradually-cid",
                         type: "file",
                         files: {},
                       },
                     },
-                  },
-                  "aunt.txt": {
-                    name: "aunt.txt",
-                    cid: "bafkreidiuqbbdejpvxt5eqlaejc2quodagud5wxc6awrrfptxio7hchqmy",
-                    type: "file",
-                    files: {},
-                  },
-                  "uncle.txt": {
-                    name: "uncle.txt",
-                    cid: "bafkreibz2uox5lvoi75yq4b5innvuq4a57lvnk5ynhfhrpxpqwmr73i2ta",
-                    files: {},
                   },
                 },
+              },
+              "perilously": {
+                cid: "perilously-cid",
+                type: "file",
+                files: {},
               },
             },
           },
