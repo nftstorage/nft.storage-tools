@@ -45,7 +45,7 @@ const retryClientStore = async (client, fileProps, timeToWait = 500) => {
   } catch (e) {
     // console.log(`error uploading ${fileProps.name}: ${e.message}`)
     timeToWait *= (1 + Math.random()) // backoff rate, adding some jitter. Should help the concurrency figure itself out.
-    console.error(chalk.red(`will retry uploading ${fileProps.name} in, ${timeToWait}ms`))
+    console.error(chalk.red(`will retry uploading ${fileProps.name} in ${timeToWait}ms`))
     await timeout(timeToWait)
     return retryClientStore(client, fileProps, timeToWait)
   }
