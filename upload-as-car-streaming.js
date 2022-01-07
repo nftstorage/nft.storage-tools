@@ -4,7 +4,7 @@
  * Usage:
  *     node upload-as-car.js path/to/file
  */
- import { PassThrough, pipeline } from "stream"
+import { PassThrough } from "stream"
 import dotenv from "dotenv"
 import fetch from "node-fetch"
 import { NFTStorage } from "nft.storage"
@@ -16,7 +16,7 @@ import { FsBlockStore } from "ipfs-car/blockstore/fs"
 const storeStream = async ({ endpoint, token, path }) => {
   const url = new URL("upload/", endpoint)
   const stream = new PassThrough()
-  
+
   const fetchPromise = fetch(url.toString(), {
     method: "POST",
     headers: NFTStorage.auth(token),
@@ -32,6 +32,7 @@ const storeStream = async ({ endpoint, token, path }) => {
 
   const result = await fetchPromise
   console.log(JSON.stringify(result))
+  console.log(`read: ${stream.bytesRead} bytes`)
   if (result.ok) {
     return result.value.cid
   } else {
