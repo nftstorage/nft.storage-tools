@@ -39,6 +39,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
       }
     }
     const logData = (data) => {
+      console.clear()
       console.table({ ...data, fileName: file, filesFinished: filesFinished++, filesTotal: files.length, filePercent: (filesFinished / files.length) * 100, filesPerSecond: filesFinished / ((Date.now() - startTime) / 1000) })
     }
     retryClientStore(client, fileProps).then(logData).finally(release) //finally, sweet release.
