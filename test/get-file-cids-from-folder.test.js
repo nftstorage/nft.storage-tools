@@ -60,7 +60,7 @@ describe("Directory Walking in IPFS", () => {
       })
       it("should have cids", () => {
         const cid = dirinfo["data"].cid
-        expect(cid).toBeDefined()
+        expect(cid).toEqual("bafybeifoxdqsohqbyj7a7hzsh2aruusoal2yhbgustgw7e7zr4cc2ks7oa")
         console.log(cid)
       })
     })
