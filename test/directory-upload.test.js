@@ -1,5 +1,5 @@
 import {mkdirSync} from "fs"
-import { directoryUpload } from "../lib/directory-upload.js"
+import { directoryUpload } from "../lib/directory-upload"
 describe("Directory Uploading", () => {
   xdescribe("directoryUpload", () => {
     it("should exist", () => {

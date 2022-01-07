@@ -1,4 +1,4 @@
-import { getIpfsDirectoryInfo } from "../lib/directory-upload.js"
+import { getIpfsDirectoryInfo } from "../lib/directory-upload"
 import { create as ipfsHttpCreate } from "ipfs-http-client"
 import { map, path } from "ramda"
 
