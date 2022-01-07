@@ -2,7 +2,7 @@
  * Pack a CAR file and upload to nft.storage.
  *
  * Usage:
- *     node upload-as-car.js path/to/file
+ *     MAX_CONCURRENT_UPLOADS=5 API_KEY="<whatever>" node upload-directory.js ./test/data/1-file-directory
  */
 import { readFile } from "fs/promises"
 import dotenv from "dotenv"
