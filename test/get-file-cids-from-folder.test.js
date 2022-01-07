@@ -61,10 +61,9 @@ describe("Directory Walking in IPFS", () => {
     })
   })
   describe("flatten", () => {
+    let dirinfo
     describe("given a directory in the 'getIpfsDirectoryInfo' format", () => {
-      let dirinfo
       beforeEach(() => {
-        //sorry for the huge object. But we need to test deeply nested stuff
         dirinfo = {
           "tower-madness": {
             cid: "tower-madness-cid",
@@ -83,39 +82,42 @@ describe("Directory Walking in IPFS", () => {
         let flattened
         beforeEach(() => {
           flattened = findCidsForFiles(dirinfo, ["tower-madness/perilously.txt"])
-        
         })
-        it.only("should give us the correct path for the perilously.txt file", () => {
+        it("should give us the correct path for the perilously.txt file", () => {
           console.log({ flattened })
           const perilous = flattened["tower-madness/perilously.txt"]
           expect(perilous.cid).toEqual("perilously-cid")
         })
       })
-      
-      describe("when flattening the directory with different input", () => {
-        beforeEach(() => {
-          dirinfo = {
-            "flips-stealth": {
-              cid: "flips-stealth-cid",
-              type: "dir",
-              files: {
-                "melodramatic-malfunctions": {
-                  cid: "melodramatic-malfunctions-cid",
-                  type: "dir",
-                  files: {
-                    "urges-fingerprint-gradually.txt": {
-                      cid: "gradual-fingerprint-cid",
-                      type: "file",
-                      files: {},
-                    },
+    })
+    describe("given a different directory in the 'getIpfsDirectoryInfo' format", () => {
+      beforeEach(() => {
+        dirinfo = {
+          "flips-stealth": {
+            cid: "flips-stealth-cid",
+            type: "dir",
+            files: {
+              "melodramatic-malfunctions": {
+                cid: "melodramatic-malfunctions-cid",
+                type: "dir",
+                files: {
+                  "urges-fingerprint-gradually.txt": {
+                    cid: "gradual-fingerprint-cid",
+                    type: "file",
+                    files: {},
                   },
                 },
               },
             },
-          }
+          },
+        }
+      })
+      describe("when flattening the directory with different input", () => {
+        let flattened
+        beforeEach(() => {
+          flattened = findCidsForFiles(dirinfo, ["flips-stealth/melodramatic-malfunctions/urges-fingerprint-gradually.txt"])
         })
         it("should give us the correct path for the urges-fingerprint-gradually.txt file", () => {
-          console.log(JSON.stringify(flattened, null, 2))
           const sudden = flattened["flips-stealth/melodramatic-malfunctions/urges-fingerprint-gradually.txt"]
           expect(sudden.cid).toEqual("gradual-fingerprint-cid")
         })
