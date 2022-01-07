@@ -14,6 +14,7 @@ import { Semaphore } from "await-semaphore"
 import { promisify } from "util"
 const timeout = promisify(setTimeout)
 
+//lots of dummy data to test the uploader
 const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
   const image = new File(await readFile(process.cwd() + "/status.js"), "status.js", { type: "image/jpg" })
   const limiter = new Semaphore(maxConcurrentUploads)
@@ -29,7 +30,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
       image,
       description: "aaron's fancy uploader",
       properties: {
-        file: new File(await readFile(file), file, { type: "text/plain" })
+        file: new File(await readFile(file, "utf8"), file, { type: "text/plain" })
       }
     }
     retryClientStore(client, fileProps).then(console.log).finally(release)
@@ -42,7 +43,7 @@ const retryClientStore = async (client, fileProps, timeToWait = 500) => {
     return await client.store(fileProps)
   } catch (e) {
     console.log(`error uploading ${fileProps.name}: ${e.message}`)
-    timeToWait *= 1.2 + Math.random() // add some jitter
+    timeToWait *= 1.2 + Math.random() // backoff rate, adding some jitter. Should help the concurrency figure itself out.
     console.log("will retry in", timeToWait, "ms")
     await timeout(timeToWait)
     return retryClientStore(client, fileProps, timeToWait)
