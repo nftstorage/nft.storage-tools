@@ -5,6 +5,11 @@ import { map, path } from "ramda"
 // Note: to avoid rate limiting, consider running a local ipfs daemon and running the tests like this:
 // IPFS_URL="http://localhost:5001/api/v0" npm run test
 // This also caches the files locally, greatly speeding up the tests.
+//
+// You can run ipfs locally with:
+// The chrome extension "ipfs companion" will open files in your local cache
+// Chrome extension is here: https://chrome.google.com/webstore/detail/ipfs-companion/nibjojkomfdiaoajekhjakgkdhaomnch
+// IPFS can be downloaded here: https://docs.ipfs.io/install/ipfs-desktop/
 
 const IPFS_URL = process.env.IPFS_URL || "https://dweb.link/api/v0"
 
