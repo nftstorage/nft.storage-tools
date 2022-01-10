@@ -28,12 +28,13 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
 
   let filesFinished = 0;
   let timeBetweenCalls = 500;
+
   for (const file of files) {
     const release = await limiter.acquire();
     const fileProps = {
       name: file,
       image,
-      description: "aaron's fancy uploader",
+      description: `uploaded from ${file}`,
       properties: {
         file: new File(await readFile(file, "utf8"), file, { type: "text/plain" }),
       },
@@ -50,7 +51,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
       });
       return newTimeout
     };        
-    retryClientStore(client, fileProps, 500)
+    retryClientStore(client, fileProps, timeBetweenCalls)
       .then(logData)      
       .then((timeWaited) => {                
         timeBetweenCalls = timeWaited;       
@@ -62,7 +63,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
 const retryClientStore = async (client, fileProps, timeToWait = 500) => {
   try {
     await client.store(fileProps);
-    return timeToWait;
+    return timeToWait/2
   } catch (e) {
     timeToWait *= 1 + Math.random(); // backoff rate, adding some jitter. Should help the concurrency figure itself out.
     
