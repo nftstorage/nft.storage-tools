@@ -16,6 +16,7 @@ import { NFTStorage, File } from "nft.storage";
 
 const timeout = promisify(setTimeout);
 
+const MAX_TIMEOUT = 15000;
 //lots of dummy data to test the uploader
 const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
   const startTime = Date.now();
@@ -59,12 +60,12 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
 const retryClientStore = async (client, fileProps, timeToWait = 1) => {
   try {
     await client.store(fileProps);
-    return timeToWait/1.1;
+    return timeToWait/2;
 
   } catch (e) {
     timeToWait *= (1 +Math.random());
 
-    if (timeToWait > 60 * 1000) timeToWait = 60 * 1000
+    if (timeToWait > MAX_TIMEOUT) timeToWait = MAX_TIMEOUT * (1 +Math.random());
 
     console.error(chalk.red(`will retry uploading ${fileProps.name} in ${timeToWait}ms`));
     await timeout(timeToWait);
