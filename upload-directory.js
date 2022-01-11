@@ -8,7 +8,7 @@
  */
 import {uploadDirectory} from './lib/upload-directory.js';
 import dotenv from "dotenv";
-//lots of dummy data to test the uploader
+
 dotenv.config();
 
 async function main() {
@@ -24,7 +24,7 @@ async function main() {
 
   const endpoint = process.env.ENDPOINT || "https://api.nft.storage";
   const maxTimeout = process.env.MAX_TIMEOUT || 60 * 1000;
-  const maxConcurrentUploads = parseInt(process.env.MAX_CONCURRENT_UPLOADS || '5');
+  const maxConcurrentUploads = parseInt(process.env.MAX_CONCURRENT_UPLOADS || '10');
   await uploadDirectory({ endpoint, token, path: filePath, maxConcurrentUploads, maxTimeout });
 }
 
