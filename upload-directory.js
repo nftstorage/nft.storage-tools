@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 /**
  * Upload all files in a directory. Recursively searches subdirectories and uploads async.
  *
