@@ -59,7 +59,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
 const retryClientStore = async (client, fileProps, timeToWait = 1) => {
   try {
     await client.store(fileProps);
-    return Math.random() > 0.90 ? timeToWait/1.1: timeToWait;
+    return timeToWait/1.1;
 
   } catch (e) {
     timeToWait *= (1 +Math.random());
