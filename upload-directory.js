@@ -27,7 +27,7 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
   const files = await recursive(path);
 
   let filesFinished = 0;
-  let timeBetweenCalls = 500;
+  let timeBetweenCalls = 1;
 
   for (const file of files) {
     const release = await limiter.acquire();
@@ -39,8 +39,8 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
         file: new File(await readFile(file, "utf8"), file, { type: "text/plain" }),
       },
     };
-    const logData = (newTimeout) => {      
-      console.clear()
+    const logData = (newTimeout) => {
+      console.clear();
       console.table({
         newTimeout,
         fileName: file,
@@ -48,26 +48,23 @@ const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
         filesTotal: files.length,
         filePercent: (filesFinished / files.length) * 100,
         filesPerSecond: filesFinished / ((Date.now() - startTime) / 1000),
-      });
-      return newTimeout
-    };        
-    retryClientStore(client, fileProps, timeBetweenCalls)
-      .then(logData)      
-      .then((timeWaited) => {                
-        timeBetweenCalls = timeWaited;       
-        if (Math.random() > 0.999) timeBetweenCalls = timeBetweenCalls/2
-      }).finally(release)
+      });   
+      timeBetweenCalls = newTimeout; 
+      return newTimeout;
+    };
+    retryClientStore(client, fileProps, timeBetweenCalls).then(logData).finally(release);
   }
 };
 
-const retryClientStore = async (client, fileProps, timeToWait = 500) => {
+const retryClientStore = async (client, fileProps, timeToWait = 1) => {
   try {
     await client.store(fileProps);
-    return timeToWait/2
+    return Math.random() > 0.90 ? timeToWait/1.1: timeToWait;
+
   } catch (e) {
-    timeToWait *= 1 + Math.random(); // backoff rate, adding some jitter. Should help the concurrency figure itself out.
-    
-    if (timeToWait > 60 * 1000) timeToWait = 60 * 1000 * (1 + Math.random()); // cap at 1-2 minutes
+    timeToWait *= (1 +Math.random());
+
+    if (timeToWait > 60 * 1000) timeToWait = 60 * 1000
 
     console.error(chalk.red(`will retry uploading ${fileProps.name} in ${timeToWait}ms`));
     await timeout(timeToWait);
