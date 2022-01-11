@@ -24,7 +24,7 @@ async function main() {
 
   const endpoint = process.env.ENDPOINT || "https://api.nft.storage";
   const maxTimeout = process.env.MAX_TIMEOUT || 60 * 1000;
-  const maxConcurrentUploads = process.env.MAX_CONCURRENT_UPLOADS || 3;
+  const maxConcurrentUploads = parseInt(process.env.MAX_CONCURRENT_UPLOADS || '5');
   await uploadDirectory({ endpoint, token, path: filePath, maxConcurrentUploads, maxTimeout });
 }
 
