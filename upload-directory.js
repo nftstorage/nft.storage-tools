@@ -5,74 +5,9 @@
  *     MAX_CONCURRENT_UPLOADS=5 API_KEY="<whatever>" node upload-directory.js ./test/data/1-file-directory
 
  */
-import { readFile } from "fs/promises";
-import { promisify } from "util";
-
+import {uploadDirectory} from './lib/upload-directory.js';
 import dotenv from "dotenv";
-import { Semaphore } from "await-semaphore";
-import recursive from "recursive-readdir";
-import chalk from "chalk";
-import { NFTStorage, File } from "nft.storage";
-
-const timeout = promisify(setTimeout);
-
-const MAX_TIMEOUT = 15000;
 //lots of dummy data to test the uploader
-const storeFiles = async ({ endpoint, token, path, maxConcurrentUploads }) => {
-  const startTime = Date.now();
-
-  const image = new File(await readFile(process.cwd() + "/status.js"), "status.js", { type: "image/jpg" });
-  const limiter = new Semaphore(maxConcurrentUploads);
-  const client = new NFTStorage({ endpoint, token });
-
-  const files = await recursive(path);
-
-  let filesFinished = 0;
-  let timeBetweenCalls = 1;
-
-  for (const file of files) {
-    const release = await limiter.acquire();
-    const fileProps = {
-      name: file,
-      image,
-      description: `uploaded from ${file}`,
-      properties: {
-        file: new File(await readFile(file, "utf8"), file, { type: "text/plain" }),
-      },
-    };
-    const logData = (newTimeout) => {
-      console.clear();
-      console.table({
-        newTimeout,
-        fileName: file,
-        filesFinished: filesFinished++,
-        filesTotal: files.length,
-        filePercent: (filesFinished / files.length) * 100,
-        filesPerSecond: filesFinished / ((Date.now() - startTime) / 1000),
-      });   
-      timeBetweenCalls = newTimeout; 
-      return newTimeout;
-    };
-    retryClientStore(client, fileProps, timeBetweenCalls).then(logData).finally(release);
-  }
-};
-
-const retryClientStore = async (client, fileProps, timeToWait = 1) => {
-  try {
-    await client.store(fileProps);
-    return timeToWait/2;
-
-  } catch (e) {
-    timeToWait *= (1 +Math.random());
-
-    if (timeToWait > MAX_TIMEOUT) timeToWait = MAX_TIMEOUT * (1 +Math.random());
-
-    console.error(chalk.red(`will retry uploading ${fileProps.name} in ${timeToWait}ms`));
-    await timeout(timeToWait);
-    return retryClientStore(client, fileProps, timeToWait);
-  }
-};
-
 dotenv.config();
 
 async function main() {
@@ -87,8 +22,9 @@ async function main() {
   }
 
   const endpoint = process.env.ENDPOINT || "https://api.nft.storage";
+  const maxTimeout = process.env.MAX_TIMEOUT || 60 * 1000;
   const maxConcurrentUploads = process.env.MAX_CONCURRENT_UPLOADS || 3;
-  await storeFiles({ endpoint, token, path: filePath, maxConcurrentUploads });
+  await uploadDirectory({ endpoint, token, path: filePath, maxConcurrentUploads, maxTimeout });
 }
 
 main();
