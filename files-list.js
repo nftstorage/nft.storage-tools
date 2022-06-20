@@ -5,23 +5,28 @@
  *     node files-list.js
  */
 import dotenv from 'dotenv'
-import fetch from 'node-fetch'
+import fetch from '@web-std/fetch'
 
 dotenv.config()
 
+const LIMIT = 100
+
 async function * list (endpoint) {
+  const apiKey = process.env.API_KEY
+  if (!apiKey) throw new Error('missing nft.storage API key')
+
   let before = ''
   while (true) {
-    const url = new URL(`?before=${before}&limit=100`, endpoint)
+    const url = new URL(`?before=${encodeURIComponent(before)}&limit=${LIMIT}`, endpoint)
     const res = await fetch(url.toString(), {
-      headers: { Authorization: `Bearer ${process.env.API_KEY}` }
+      headers: { Authorization: `Bearer ${apiKey}` }
     })
     if (!res.ok) {
       throw new Error(`${res.status}: ${res.statusText}: ${await res.text()}`)
     }
     const { value } = await res.json()
     yield value
-    if (!value.length) break
+    if (value.length < LIMIT) break
     before = value[value.length - 1].created
   }
 }

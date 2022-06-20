@@ -8,7 +8,7 @@
  */
 import dotenv from 'dotenv'
 import { Cluster } from '@nftstorage/ipfs-cluster'
-import fetch from 'node-fetch'
+import fetch from '@web-std/fetch'
 import * as d3 from 'd3-format'
 import { toPSAStatus } from './lib/cluster.js'
 

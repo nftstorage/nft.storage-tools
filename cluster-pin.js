@@ -10,7 +10,7 @@ import { pipeline } from 'stream/promises'
 import dotenv from 'dotenv'
 import * as d3 from 'd3-format'
 import batch from 'it-batch'
-import fetch from 'node-fetch'
+import fetch from '@web-std/fetch'
 import { Cluster } from '@nftstorage/ipfs-cluster'
 import split from './lib/split.js'
 

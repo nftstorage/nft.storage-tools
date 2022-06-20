@@ -37,7 +37,7 @@ async function main () {
   const cluster = new Cluster(process.env.CLUSTER_URL, { headers })
 
   try {
-    const res = await cluster.add(file, { local: true })
+    const res = await cluster.addCAR(file, { local: true })
     console.log(res)
   } catch (err) {
     console.error(err)

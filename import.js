@@ -11,7 +11,7 @@ import ora from 'ora'
 import { pipeline } from 'stream/promises'
 import dotenv from 'dotenv'
 import * as d3 from 'd3-format'
-import fetch from 'node-fetch'
+import fetch from '@web-std/fetch'
 import { RateLimiter } from 'limiter'
 import retry from 'p-retry'
 import AbortController from 'abort-controller'
@@ -23,7 +23,7 @@ dotenv.config()
 
 const format = d3.format(',')
 const BATCH_SIZE = 1000 // process CIDs in batches of this size
-const RATE_LIMIT = [100, /* per */ 'second'] // rate limit requests to nft.storage
+const RATE_LIMIT = [2, /* per */ 'second'] // rate limit requests to nft.storage
 const RETRIES = 5 // failed request retries
 
 function parseArgs () {
