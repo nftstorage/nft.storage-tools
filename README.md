@@ -1,6 +1,6 @@
-# nft.storage tools
+# NFT.Storage tools
 
-Tools for working with nft.storage.
+Tools for working with NFT.Storage.
 
 ## Usage
 
@@ -22,9 +22,9 @@ Tools for working with nft.storage.
     ```
 1. Choose a script from the root to run (usage instructions can be found at the top of the file) or instructions for some common [tasks](#tasks) can be found below.
 
-### Advanced (nft.storage developers only)
+### Advanced (NFT.Storage developers only)
 
-To talk directly to the nft.storage IPFS Cluster using the `cluster*.js` scripts, add the following to the `.env` file:
+To talk directly to the NFT.Storage IPFS Cluster using the `cluster*.js` scripts, add the following to the `.env` file:
 
 ```sh
 CLUSTER_URL="https://CLUSTER_DOMAIN/api/"
@@ -35,7 +35,7 @@ CLUSTER_HEADERS='{"Authorization":"Basic CLUSTER_BASIC_AUTH_KEY"}'
 
 ### Import a list of CIDs
 
-You have a list of CIDs for content you have stored in IPFS already and would like to import that content into nft.storage.
+You have a list of CIDs for content you have stored in IPFS already and would like to import that content into NFT.Storage. To be able to do so, you must be added to an allowlist for using the Pinning Service API. If you would like to be added, email `support (at) nft.storage` with your project name and a description, a public profile link for you or your project (Twitter, artist profile, etc.) and 5-10 CIDs of content you're looking to pin.
 
 1. Export CIDs to a newline delimited file. For example, you could use the following command:
     ```sh
@@ -48,7 +48,7 @@ You have a list of CIDs for content you have stored in IPFS already and would li
     ```
     Note: if you need to stop the script, you can resume from a particular line number by passing `--start 1000` (to start from line 1,000).
 
-After nft.storage receives all your CIDs, it'll start to transfer data from peers that already have the content. This may take a long time for long lists of CIDs and may _fail_ if the content cannot be found on the IPFS network. You can [check the status of the CIDs you imported](#check-pinning-status-of-cid-list).
+After NFT.Storage receives all your CIDs, it'll start to transfer data from peers that already have the content. This may take a long time for long lists of CIDs and may _fail_ if the content cannot be found on the IPFS network. You can [check the status of the CIDs you imported](#check-pinning-status-of-cid-list).
 
 ### Check pinning status of CID list
 
